@@ -55,14 +55,14 @@ end
 	SetFont(SystemFont_InverseShadow_Small, normal)
 	SetFont(SystemFont_Med1, normal)
 	SetFont(SystemFont_Shadow_Med1, normal)
-	SetFont(SystemFont_Shadow_Med1_Outline, normal)
+	--SetFont(SystemFont_Shadow_Med1_Outline, normal)	--doesn't exist
 	SetFont(SystemFont_Med2, normal)
 	SetFont(SystemFont_Shadow_Med2, normal)
 	SetFont(SystemFont_Med3, normal)
 	SetFont(SystemFont_Shadow_Med3, normal)
 	SetFont(SystemFont_Large, bold)
 	SetFont(SystemFont_Shadow_Large, bold)
-	SetFont(SystemFont_Shadow_Large_Outline, bold)
+	--SetFont(SystemFont_Shadow_Large_Outline, bold)	
 	SetFont(SystemFont_Huge1, normal)
 	SetFont(SystemFont_Shadow_Huge1, normal)
 	SetFont(SystemFont_OutlineThick_Huge2, bold) 
@@ -82,7 +82,7 @@ end
 	SetFont(FriendsFont_Small, normal)
 	SetFont(FriendsFont_Large, bold)
 	SetFont(GameFont_Gigantic, normal)
-	SetFont(ChatBubbleFont, normal)
+	--SetFont(ChatBubbleFont, normal)
 
 
 	SetFont(GameTooltipHeader, normal, 12)
@@ -94,7 +94,7 @@ end
 	SetFont(NumberFont_Shadow_Small, narrow)
 	SetFont(NumberFont_OutlineThick_Mono_Small, narrow)
 	SetFont(NumberFont_Shadow_Med, narrow)
-	SetFont(NumberFont_Normal_Med, narrow) 
+	--SetFont(NumberFont_Normal_Med, narrow) 
 	SetFont(NumberFont_Outline_Med, narrow) 
 	SetFont(NumberFont_Outline_Large, narrow)
 	

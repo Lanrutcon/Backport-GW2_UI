@@ -5,19 +5,15 @@ BuffFrame:SetParent(unitframePowerbg)
 BuffFrame:SetPoint('BOTTOMRIGHT',unitframePowerbg,'TOPRIGHT',0,10)
 
 
-
+--CHANGES:Lanrutcon:now is checking if it's visible instead of its alpha value
 BuffFrame:HookScript("OnUpdate", function(self)
-    if MultiBarBottomRight:GetAlpha()>0.0 then
+    if MultiBarBottomRight:IsVisible() then
         BuffFrame:SetPoint('BOTTOMRIGHT',unitframePowerbg,'TOPRIGHT',0,110)
-        
     else
         BuffFrame:SetPoint('BOTTOMRIGHT',unitframePowerbg,'TOPRIGHT',0,10)
-        
     end
-        
-        
-      
 end)        
+
 BuffFrame:HookScript("OnEvent", function(self, event, unit)
     if unit == 'player' then
     local x = 1;

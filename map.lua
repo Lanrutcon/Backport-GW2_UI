@@ -13,7 +13,7 @@ MinimapCluster:Hide()
 MinimapBorder:Hide()
 MiniMapWorldMapButton:Hide()
 
-GarrisonLandingPageMinimapButton:ClearAllPoints()
+--GarrisonLandingPageMinimapButton:ClearAllPoints()	--doesn't exist
 MiniMapMailFrame:ClearAllPoints()
 GameTimeFrame:ClearAllPoints()
 MinimapZoneText:ClearAllPoints()
@@ -21,10 +21,10 @@ MinimapZoneText:ClearAllPoints()
 MinimapZoneText:SetParent(Minimap)
 
 
-GarrisonLandingPageMinimapButton:SetPoint('TOPLEFT',Minimap,0,30)
+--GarrisonLandingPageMinimapButton:SetPoint('TOPLEFT',Minimap,0,30) 	--doesn't exist
 MiniMapTracking:SetPoint('TOPLEFT',Minimap,-15,-30)
 MiniMapMailFrame:SetPoint('TOPLEFT',Minimap,45,15)
-QueueStatusMinimapButton:SetPoint('TOPLEFT',Minimap,75,15)
+--QueueStatusMinimapButton:SetPoint('TOPLEFT',Minimap,75,15)		--doesn't exist
 GameTimeFrame:SetPoint('TOPRIGHT',Minimap,0,25)
 MinimapZoneText:SetPoint('TOP',Minimap,0,25)
 

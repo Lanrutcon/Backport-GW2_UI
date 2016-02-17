@@ -1,3 +1,16 @@
+--MISSING FUNCTIONS--
+
+function GetSpecialization()
+	return GetPrimaryTalentTree();
+end
+
+function GetSpecializationInfo(index)
+	return GetTalentTabInfo(index);
+end
+
+-----------------------
+
+
 local spe = CreateFrame("frame",'spe',UIParent)
 local prevSpec = nil
 local prevStance = nil
@@ -141,7 +154,7 @@ end
 
         end
         altPowerHolder:SetScript("OnEvent", function(self, event, unit)
-            if event=='PLAYER_SPECIALIZATION_CHANGED' then
+            if event=='ACTIVE_TALENT_GROUP_CHANGED' then
                 if unit ~= 'player' then
                 return
                 end
@@ -184,7 +197,7 @@ end
 
 
 
-spe:RegisterEvent("PLAYER_SPECIALIZATION_CHANGED")
+spe:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 spe:RegisterEvent("PLAYER_ENTERING_WORLD")
 spe:RegisterEvent("CHARACTER_POINTS_CHANGED")
 spe:RegisterEvent("UPDATE_SHAPESHIFT_FORM")

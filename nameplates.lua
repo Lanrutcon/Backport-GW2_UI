@@ -3,18 +3,32 @@ local nPlates = CreateFrame("frame",nil,UIParent)
 local Plates = {};
 local i = 1;
 
+
+--CHANGES:Lanrutcon:Backported 6.0 nameplates to 4.1
 local function PlateAdd ( Plate )
     
     i = i +1;
-    
-    local f1, f2 = Plate:GetChildren()
+   
+	local nameplate = Plate;		
+	-- Get StatusBar children
+	nameplate.healthbar, nameplate.castbar = nameplate:GetChildren()
+	local castbar = nameplate.castbar
+	-- Get regions 
+	local targetflash, healthborder, glow, name, level, skull, raidicons, eliteicon = nameplate:GetRegions()
+	local castbarfill, castborder, shield, spellicon = nameplate.castbar:GetRegions()
+	local healthbarfill = nameplate.healthbar:GetRegions()
+   
+   
+    --local f1, f2 = Plate:GetChildren()
 	
-    local Health, Cast = f1:GetChildren()
-    local old_name = f2:GetRegions()
+    local Health, Cast = nameplate.healthbar, nameplate.castbar;
+    local old_name = name;
     
-	local old_threat, hpborder, highlight, old_level, old_bossicon, raidicon, old_elite = f1:GetRegions()
+	local old_threat, hpborder, highlight, old_level, old_bossicon, raidicon, old_elite = nameplate:GetRegions()
 	local cbtexture, cbborder, old_cbshield, old_cbicon, old_cbname, cbnameshadow = Cast:GetRegions()
     
+	
+
 
     old_threat:Hide()
     hpborder:Hide()

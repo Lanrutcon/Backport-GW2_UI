@@ -1,3 +1,23 @@
+--MISSING FUNCTIONS
+
+--CHANGES:Lanrutcon:SetAnimation was introduced in 5.0.4, implemented a similar function
+local function SetAnimation(model, sequence)
+	model.timer = 0;
+	model:SetScript("OnUpdate", function(self, elapsed)
+		--this stops onupdate script (if no animation is on queue, it will break after 4secs)
+		if(self.timer > 4000) then
+			self:SetScript("OnUpdate", nil);
+		else
+			model:SetSequenceTime(sequence, self.timer);
+			self.timer = (self.timer + (elapsed*1000))
+		end
+	end)
+	if model.debug then
+		model.debug:SetText(sequence);
+	end
+end
+
+
 local questState = 'TAKE'   
 local questStateSet = false
 
@@ -215,8 +235,7 @@ function setQuestGiverAnimation()
     if s =='?' then
         a = 65
     end
-    targetModelQuestView:SetAnimation(a)
-    
+    SetAnimation(targetModelQuestView, a)
 end
 
 function questTextCompleted()

@@ -58,8 +58,9 @@ GW2UI_SETTINGS['SETTINGS_LOADED'] = false;
 
 animations = {}
 
+--CHANGES:Lanrutcon:decimals args must be a number
 function round(number, decimals)
-    return (("%%.%df"):format(decimals)):format(number)
+    return (("%%.%df"):format(decimals or 0)):format(number)
 end
 function  lerp( v0,  v1,  t) 
   return v0 + t*(v1-v0);

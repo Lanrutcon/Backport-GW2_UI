@@ -183,6 +183,8 @@ unitBGf:SetScript("OnEvent",function(self,event,unit)
         end
     local num = UnitHealth('player')
     local uhm = UnitHealth('Player')/UnitHealthMax('Player')
+	
+	--[[ doesn't exist
     local totalAbsorb =  UnitGetTotalAbsorbs("Player")
     if totalAbsorb > UnitHealthMax('Player') then
             totalAbsorb = UnitHealthMax('Player')
@@ -191,7 +193,7 @@ unitBGf:SetScript("OnEvent",function(self,event,unit)
             totalAbsorb = 1
     end
     local auhm = totalAbsorb/UnitHealthMax('Player')    
-        
+    ]]--    
     
     
     addToAnimation('unitFrameHealth',healthBefore, uhm + 0.03,GetTime(),0.2,function()
@@ -219,8 +221,8 @@ unitBGf:SetScript("OnEvent",function(self,event,unit)
        
         
      
-        absorb:SetHeight(auhm*absorb:GetWidth())
-        absorbt:SetTexCoord(0,1,  math.abs(auhm - 1),1)
+        --absorb:SetHeight(auhm*absorb:GetWidth())
+        --absorbt:SetTexCoord(0,1,  math.abs(auhm - 1),1)
         
     if not num then return 0 end
     if abs(num) > 10000 then
