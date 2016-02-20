@@ -141,7 +141,7 @@ unitframePower:SetScript("OnEvent",function(self,event,unit)
             if unit ~='player' then
                 return
             end
-        end
+		end
     powerType, powerToken, altR, altG, altB = UnitPowerType("player")
     if PowerBarColorCustom[powerToken] then
         local pwcolor = PowerBarColorCustom[powerToken]
@@ -150,14 +150,24 @@ unitframePower:SetScript("OnEvent",function(self,event,unit)
     end
    
     local prog = (UnitPower('Player')/UnitPowerMax('Player')) * 100
-        
-     addToAnimation('unitFramePowerBar',powerBeforeLerp,prog,GetTime(),0.2,function()
-       unitframePower:SetValue(animations['unitFramePowerBar']['progress'])
-    end)
-    addToAnimation('unitFramePowerBarCandy',powerBeforeLerp,prog,GetTime(),0.25,function()
-       unitframePowerCandy:SetValue(animations['unitFramePowerBarCandy']['progress'])
-    end)
-       
+    
+		if UnitPower("Player") ~= 0 then
+		addToAnimation('unitFramePowerBar',powerBeforeLerp,prog,GetTime(),0.2,function()
+			unitframePower:SetValue(animations['unitFramePowerBar']['progress'])
+		end)
+		addToAnimation('unitFramePowerBarCandy',powerBeforeLerp,prog,GetTime(),0.25,function()
+			 unitframePowerCandy:SetValue(animations['unitFramePowerBarCandy']['progress'])
+		   end)
+		else
+			addToAnimation('unitFramePowerBar',powerBeforeLerp,prog,GetTime(),0.2,function()
+			unitframePower:SetValue(0)
+		end)
+			addToAnimation('unitFramePowerBarCandy',powerBeforeLerp,prog,GetTime(),0.25,function()
+			 unitframePowerCandy:SetValue(0)
+		   end)
+		end
+		
+		
     powerBeforeLerp = prog
     local num = UnitPower('player')
     local uhm = UnitPower('Player')/UnitPowerMax('Player')
@@ -170,17 +180,22 @@ unitframePower:SetScript("OnEvent",function(self,event,unit)
     else
         unitframePowerText:SetText(num)
     end
-        
+    if event == "PLAYER_ENTERING_WORLD" then
+		if UnitPower("Player") == 0 then
+			unitframePower:SetValue(0);
+			unitframePowerCandy:SetValue(0);
+		end
+	end
 end)
 healthBefore = UnitHealth('Player') / UnitHealthMax('Player')
 normalHealthBefore = healthBefore
 
 unitBGf:SetScript("OnEvent",function(self,event,unit)
-        if event~='PLAYER_ENTERING_WORLD' then
-            if unit ~='player' then
-                return
-            end
+    if event~='PLAYER_ENTERING_WORLD' then
+        if unit ~='player' then
+            return
         end
+    end
     local num = UnitHealth('player')
     local uhm = UnitHealth('Player')/UnitHealthMax('Player')
 	

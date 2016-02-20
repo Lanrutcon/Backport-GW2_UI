@@ -16,6 +16,7 @@ mainCastingBar:SetParent(mainCastingBarBg)
 mainCastingBarBg:SetScript("OnEvent",function(self,event,unitID,spell)
         if  unitID=='player' then
             if event=='UNIT_SPELLCAST_START' or event=='UNIT_SPELLCAST_CHANNEL_START' then
+				local spell, subText, text, texture, startTime, endTime, isTradeSkill, notInterruptible;
                 if event=='UNIT_SPELLCAST_CHANNEL_START' then
                     spell, subText, text, texture, startTime, endTime, isTradeSkill, notInterruptible = UnitChannelInfo("player")
                 else

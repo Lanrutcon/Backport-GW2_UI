@@ -1,3 +1,12 @@
+local addon, ns = ...
+
+local frameTimer = CreateFrame("FRAME"); --sometimes the icons dont show up after logging in, making a tiny timer to wait for all info
+frameTimer.total = 0;
+frameTimer:SetScript("OnUpdate", function(self, elapsed)
+self.total = self.total + elapsed;
+if(self.total > 0) then
+self:SetScript("OnUpdate",nil);
+
 _G["BonusActionBarFrame"]:SetScript("OnShow", function(self) self:Hide(); end);
 _G["BonusActionBarFrame"]:Hide();
 
@@ -11,7 +20,7 @@ end)
 
 
 
-local addon, ns = ...
+
 
 --generate a holder for the config data
 local cfg = CreateFrame("Frame")
@@ -40,10 +49,25 @@ PetActionButton1:ClearAllPoints()
 --ShapeshiftButton1:ClearAllPoints()
 
 
+
 ShapeshiftBarFrame:ClearAllPoints()
 ShapeshiftBarFrame:SetScale(0.6)
 ShapeshiftButton1:SetPoint('LEFT', ShapeshiftBarFrame, 'LEFT', 0, 0)
-ShapeshiftBarFrame:SetPoint('BOTTOMLEFT', MultiBarBottomLeft, 'TOPLEFT', 0, 20)
+ShapeshiftBarFrame:SetPoint('CENTER', ActionButton1, 'CENTER', -15, 67)
+ShapeshiftBarFrame:SetFrameStrata("HIGH");
+
+ShapeshiftButton1:SetScript("OnMouseDown", function(self, button)
+	if IsAltKeyDown() and button == "LeftButton" then
+		self:SetMovable(true);
+		self:StartMoving();
+	end
+end);
+
+ShapeshiftButton1:SetScript("OnMouseUp", function(self, button)
+	self:SetMovable(false);
+	self:StopMovingOrSizing();
+	print(self:GetPoint());
+end);
 
 -- the bottom right bar needs a better place, above the bottom left bar
 MultiBarBottomRight:EnableMouse(false)
@@ -59,19 +83,20 @@ MultiBarBottomLeft:ClearAllPoints()
 PetActionBarFrame:ClearAllPoints()
 PetActionButton1:ClearAllPoints()
 PetActionButton1:SetParent(PetActionBarFrame);
-PetActionBarFrame:SetScale(0.6)
-PetActionButton1:SetPoint('LEFT', PetActionBarFrame, 'LEFT', 0, 0)
+PetActionBarFrame:SetScale(0.9)
+PetActionBarFrame:SetParent(UIParent);
+PetActionButton1:SetPoint('CENTER', ActionButton12, 'CENTER', -253, 70)
 
 
 
 
 
 
-MultiBarBottomRight:SetPoint('BOTTOMRIGHT', ActionButton12, 'TOPRIGHT', -10, 0)
-MultiBarBottomLeft:SetPoint('BOTTOMLEFT', ActionButton1, 'TOPLEFT', 0, 0)
+MultiBarBottomRight:SetPoint('BOTTOMRIGHT', ActionButton12, 'TOPRIGHT', -10, 10)
+MultiBarBottomLeft:SetPoint('BOTTOMLEFT', ActionButton1, 'TOPLEFT', 0, 17)
 
 MultiBarBottomRightButton1:ClearAllPoints()
-MultiBarBottomRightButton1:SetPoint('BOTTOMLEFT', MultiBarBottomRight, 'BOTTOMLEFT', 0, 40)
+MultiBarBottomRightButton1:SetPoint('BOTTOMLEFT', MultiBarBottomRight, 'BOTTOMLEFT', 0, 48)
 
 
 MultiBarBottomLeftButton1:ClearAllPoints()
@@ -123,13 +148,14 @@ stancePadding = 0
 for i = 1,12 do
 
     --MAIN ACTIONBAR--
-    setBackDrop("MultiBarLeftButton"..i.."Icon",'MultiBarLeft')
-    setBackDrop("MultiBarRightButton"..i.."Icon",'MultiBarRight')
+
 
     setBackDrop("ActionButton"..i.."Icon",'MainMenuBar')
     setBackDrop("MultiBarBottomLeftButton"..i.."Icon",'MultiBarBottomLeft')
     setBackDrop("MultiBarBottomRightButton"..i.."Icon",'MultiBarBottomRight')
-
+    setBackDrop("MultiBarLeftButton"..i.."Icon",'MultiBarLeft')
+    setBackDrop("MultiBarRightButton"..i.."Icon",'MultiBarRight')
+	
     --setBackDrop("BonusActionButton"..i.."Icon","BonusActionBarFrame");
 
 
@@ -250,12 +276,13 @@ for i = 1,12 do
     _G["MultiBarBottomLeftButton" .. i]:SetCheckedTexture('Interface\\AddOns\\GW2_UI\\textures\\UI-Quickslot-Depress')
 
 
-    _G["MultiBarLeftButton" .. i ]:SetNormalTexture(nil)
-    _G["MultiBarRightButton" .. i ]:SetNormalTexture(nil)
-    _G["ActionButton" .. i ]:SetNormalTexture(nil)
+	--CHANGES:Lanrutcon:Setting "nil" the NormalTexture was tainting some blizzfuntions (e.g. UpdateUsable())
+    --_G["MultiBarLeftButton" .. i ]:SetNormalTexture(nil)
+    --_G["MultiBarRightButton" .. i ]:SetNormalTexture(nil)
+    --_G["ActionButton" .. i ]:SetNormalTexture(nil)
     --_G["BonusActionButton" .. i ]:SetNormalTexture(nil)
-    _G["MultiBarBottomRightButton" .. i ]:SetNormalTexture(nil)
-    _G["MultiBarBottomLeftButton" .. i ]:SetNormalTexture(nil)
+    --_G["MultiBarBottomRightButton" .. i ]:SetNormalTexture(nil)
+    --_G["MultiBarBottomLeftButton" .. i ]:SetNormalTexture(nil)
 
     if  _G["ShapeshiftButton"..i.."Icon"] then
         _G["ShapeshiftButton" .. i]:SetPushedTexture('Interface\\AddOns\\GW2_UI\\textures\\UI-Quickslot-Depress')
@@ -305,18 +332,6 @@ for i = 1,12 do
 end
 
 
-
---[[
-
-    -- Hide the stance bar
-
-    ShapeshiftBarFrame:SetScript("OnEvent", nil);
-
-    RegisterStateDriver(ShapeshiftBarFrame, "visibility", "hide");
-
-    ShapeshiftBarFrame:Hide()
-
---]]
 
 -----------------------------
 -- Right/Left Action Bar
@@ -700,61 +715,8 @@ function setMicroButtons()
     end
 end
 
-local f = CreateFrame('frame', nil, nil, 'SecureHandlerStateTemplate')
-f:SetFrameRef('PetActionBarFrame', PetActionBarFrame)
-f:SetFrameRef('MultiBarBottomLeft', MultiBarBottomLeft)
-f:SetFrameRef('ShapeshiftBarFrame', ShapeshiftBarFrame) --doesn't exist -- check later
-f:SetAttribute('_onstate-combat', [=[ -- Securely toggle visibility in combat
-
-    point, relativeTo, relativePoint, xOfs, yOfs = self:GetFrameRef('MultiBarBottomLeft'):GetPoint()
-	isVisible = self:GetFrameRef("MultiBarBottomLeft"):IsVisible();
-
-    if newstate == 'show' and isVisible then
-        self:GetFrameRef('PetActionBarFrame'):ClearAllPoints()
-        self:GetFrameRef('ShapeshiftBarFrame'):ClearAllPoints()
-        self:GetFrameRef('PetActionBarFrame'):SetPoint(point, relativeTo, relativePoint, xOfs, yOfs+151)
-        if UnitExists('Pet') then
-            self:GetFrameRef('ShapeshiftBarFrame'):SetPoint(point, relativeTo, relativePoint, xOfs, yOfs+195)
-        else
-            self:GetFrameRef('ShapeshiftBarFrame'):SetPoint(point, relativeTo, relativePoint, xOfs, yOfs+140)
-        end
-    else
-        self:GetFrameRef('PetActionBarFrame'):ClearAllPoints()
-        self:GetFrameRef('ShapeshiftBarFrame'):ClearAllPoints()
-        self:GetFrameRef('PetActionBarFrame'):SetPoint(point, relativeTo, relativePoint, xOfs, yOfs)
-        self:GetFrameRef('ShapeshiftBarFrame'):SetPoint(point, relativeTo, relativePoint, xOfs, yOfs+10)
-    end
-
-]=])
-RegisterStateDriver(f, 'combat', '[combat] show; hide')
 
 
-function setPetBar(bool)
-    PetActionBarFrame.locked = nil;
-    PetActionBarFrame:ClearAllPoints()
-    PetActionButton1:ClearAllPoints()
-    PetActionButton1:SetParent(PetActionBarFrame);
-    PetActionBarFrame:SetScale(0.6)
-    PetActionButton1:SetPoint('LEFT', PetActionBarFrame, 'LEFT', 0, 0)
-
-    if bool then
-        PetActionBarFrame:SetPoint('TOPLEFT', MultiBarBottomLeft, 'BOTTOMLEFT', 0, 190)
-        if UnitExists('Pet') then
-            ShapeshiftBarFrame:SetPoint('BOTTOMLEFT', MultiBarBottomLeft, 'TOPLEFT', 0, 95)
-        else
-            ShapeshiftBarFrame:SetPoint('BOTTOMLEFT', MultiBarBottomLeft, 'TOPLEFT', 0, 45)
-        end
-
-    else
-        PetActionBarFrame:SetPoint('TOPLEFT', MultiBarBottomLeft, 'BOTTOMLEFT', 0, 60)
-        if UnitExists('Pet') then
-            ShapeshiftBarFrame:SetPoint('BOTTOMLEFT', MultiBarBottomLeft, 'TOPLEFT', 0, -30)
-        else
-            ShapeshiftBarFrame:SetPoint('BOTTOMLEFT', MultiBarBottomLeft, 'TOPLEFT', 0, -70)
-        end
-    end
-
-end
 setMicroButtons()
 
 
@@ -836,3 +798,5 @@ actionBarsFrameLoad:SetScript('OnUpdate',function()
     setMoveableActionbars()
     actionBarsFrameLoad:SetScript('OnUpdate',nil)
 end)
+end
+end);

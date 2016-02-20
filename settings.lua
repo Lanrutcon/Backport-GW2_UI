@@ -1,3 +1,4 @@
+
 local frame = CreateFrame("Frame")
 frame:RegisterEvent("ADDON_LOADED")
 frame:RegisterEvent("PLAYER_LOGOUT")
@@ -118,7 +119,7 @@ function createOptionWIndow()
           GW2UI_SETTINGSWINDOW:Hide()
     end)
     
-    local settingsPageTextTitle = unitBGf:CreateFontString('settingsPageTextTitle', "OVERLAY", "GameFontNormal")
+    settingsPageTextTitle = unitBGf:CreateFontString('settingsPageTextTitle', "OVERLAY", "GameFontNormal")
     settingsPageTextTitle:SetParent(settingsViewBg)
     settingsPageTextTitle:SetTextColor(255/255,241/255,209/255)
     settingsPageTextTitle:SetFont(DAMAGE_TEXT_FONT,50)
@@ -148,7 +149,7 @@ function createOptionWIndow()
     
     
     
-    hudArangement, hudArangementTexture = createButton('BOTTOM',150,30,0,0,"Interface\\AddOns\\GW2_UI\\textures\\questviewbutton",4)
+    local hudArangement, hudArangementTexture = createButton('BOTTOM',150,30,0,0,"Interface\\AddOns\\GW2_UI\\textures\\questviewbutton",4)
     hudArangement:ClearAllPoints()
     hudArangement:SetParent(settingsViewBg)
     hudArangement:SetWidth(128)
@@ -168,7 +169,7 @@ function createOptionWIndow()
     hudArangementString:SetPoint('CENTER',hudArangement,'CENTER',0,0)
     
     
-    hudArangementDisable, hudArangementDisableTexture = createButton('TOP',150,30,0,0,"Interface\\AddOns\\GW2_UI\\textures\\questviewbutton",4)
+    local hudArangementDisable, hudArangementDisableTexture = createButton('TOP',150,30,0,0,"Interface\\AddOns\\GW2_UI\\textures\\questviewbutton",4)
     hudArangementDisable:ClearAllPoints()
     hudArangementDisable:SetPoint('TOP',UIParent,'TOP',0,0)
     hudArangementDisable:SetWidth(128)
@@ -276,7 +277,7 @@ end
 
 function createOptionGameMenuButton()
     
-    gameOptionMenuButton, gameOptionMenuButtonTexture = createButton('BOTTOM',150,30,0,0,"Interface\\AddOns\\GW2_UI\\textures\\questviewbutton",4)
+    local gameOptionMenuButton, gameOptionMenuButtonTexture = createButton('BOTTOM',150,30,0,0,"Interface\\AddOns\\GW2_UI\\textures\\questviewbutton",4)
     gameOptionMenuButton:SetParent(GameMenuFrame)
     gameOptionMenuButton:SetWidth(128)
     gameOptionMenuButton:SetHeight(32);
@@ -311,6 +312,7 @@ function createOptionGameMenuButton()
     end)
     
 end
+
 
 
 function createBoleanSetting(i,Title,description,settingString)

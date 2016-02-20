@@ -5,19 +5,19 @@ BuffFrame:SetParent(unitframePowerbg)
 BuffFrame:SetPoint('BOTTOMRIGHT',unitframePowerbg,'TOPRIGHT',0,10)
 
 
---CHANGES:Lanrutcon:now is checking if it's visible instead of its alpha value
+--CHANGES:Lanrutcon:back to alpha check
 BuffFrame:HookScript("OnUpdate", function(self)
-    if MultiBarBottomRight:IsVisible() then
-        BuffFrame:SetPoint('BOTTOMRIGHT',unitframePowerbg,'TOPRIGHT',0,110)
+    if MultiBarBottomRight:GetAlpha() > 0 then
+        BuffFrame:SetPoint('BOTTOMRIGHT',unitframePowerbg,'TOPRIGHT',0,150)
     else
-        BuffFrame:SetPoint('BOTTOMRIGHT',unitframePowerbg,'TOPRIGHT',0,10)
+        BuffFrame:SetPoint('BOTTOMRIGHT',unitframePowerbg,'TOPRIGHT',0,40)
     end
 end)        
 
 BuffFrame:HookScript("OnEvent", function(self, event, unit)
     if unit == 'player' then
-    local x = 1;
-    local y = 1;
+    local x, px = 1;
+    local y, py = 1;
     local row = 0;
     local col = 0;
     local max = 0;
@@ -41,8 +41,8 @@ BuffFrame:HookScript("OnEvent", function(self, event, unit)
     for i = preI,100 do
         px = col*-26;
         py = row*35;
-        ignoreBuff = false
-        name, rank, icon, count, dispelType, duration, expires, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossDebuff, value1, value2, value3 = UnitBuff("player", i )
+        local ignoreBuff = false
+        local name, rank, icon, count, dispelType, duration, expires, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossDebuff, value1, value2, value3 = UnitBuff("player", i )
         if shouldConsolidate  and isConsolidated then
         ignoreBuff  = true
         end

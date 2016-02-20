@@ -1,3 +1,27 @@
+--CHANGES:Lanrutcon:I'm getting a lot of tainted stuff while in-combat when trying to show/hide unitframes.
+--					Making a show/hide function that changes alpha.
+local function showFrame(frame, unit)
+	frame:SetAlpha(1);
+	if not UnitAffectingCombat("player") then
+		if(unit == "target") then
+			_G["targetGwButton"]:EnableMouse(true);
+		elseif unit == "focus" and _G["focusGwButton"] then
+			_G["focusGwButton"]:EnableMouse(true);
+		end
+	end
+end
+
+local function hideFrame(frame, unit)
+	frame:SetAlpha(0);
+	if not UnitAffectingCombat("player") then
+		if(unit == "target") then
+			_G["targetGwButton"]:EnableMouse(false);
+		elseif unit == "focus" and _G["focusGwButton"] then
+			_G["focusGwButton"]:EnableMouse(false);
+		end
+	end
+end
+
 
 function createUnitFrame(unitWatch,relativePoint)
 
@@ -35,6 +59,8 @@ function createUnitFrame(unitWatch,relativePoint)
     b:ClearAllPoints()
     b:SetPoint('CENTER',dragAble,'CENTER',-50,0)
     b:SetFrameStrata('LOW');
+	b.unit = unitWatch;
+	
 
 
 
@@ -101,8 +127,10 @@ function createUnitFrame(unitWatch,relativePoint)
     TTbarBG:SetParent(b)
     TTbarbgt:SetVertexColor(0,0,0,0.4);
     TTbarBG:SetPoint("LEFT",barBG,"RIGHT",16,0)
+	TTbarBG.unit = unitWatch .. "target";
 
-    TTbarBG:Hide()
+    hideFrame(TTbarBG, TTbarBG.unit);
+	--TTbarBG:Hide()
 
     local ttsB = CreateFrame("Button", unitWatch.."targetGwButton", TTbarBG, "SecureUnitButtonTemplate");
     ttsB:SetPoint('CENTER',TTbarBG,'CENTER',0,0)
@@ -115,6 +143,7 @@ function createUnitFrame(unitWatch,relativePoint)
     RegisterUnitWatch(ttsB);
     ttsB:RegisterForClicks('RightButtonUp', 'LeftButtonUp')
     ttsB:EnableMouse(true)
+	
 
 
 
@@ -164,30 +193,6 @@ function createUnitFrame(unitWatch,relativePoint)
     --  healthBar:SetStatusBarColor(0.6,0.1,0.1)
     healthBar:SetFrameLevel(2)
 
-    --CHANGES:Lanrutcon:AbsorbBar wasn't available in Cataclysm
-    --[[
-
-    local absorbBar = CreateFrame("StatusBar", nil, b)
-
-    absorbBar:SetStatusBarTexture("Interface\\AddOns\\GW2_UI\\textures\\gwstatusbarcandy")
-
-    absorbBar:GetStatusBarTexture():SetHorizTile(false)
-
-    absorbBar:SetMinMaxValues(0, 1)
-
-    absorbBar:SetValue(0)
-
-    absorbBar:SetWidth(270)
-
-    absorbBar:SetHeight(12)
-
-    absorbBar:SetPoint("LEFT",barBG,"LEFT",2,0)
-
-    absorbBar:SetStatusBarColor(0.9,0.9,0.6,0.6)
-
-    absorbBar:SetFrameLevel(3)
-
-    ]]--
 
     local powerbar = CreateFrame("StatusBar", nil, b)
     powerbar:SetStatusBarTexture("Interface\\AddOns\\GW2_UI\\textures\\gwstatusbar")
@@ -231,7 +236,6 @@ function createUnitFrame(unitWatch,relativePoint)
             addToAnimation(unitWatch..'unitFrameTargetTargetAnimation',unitFrameTargetTargetAnimation[unitWatch],150,GetTime(),0.2,function()
                 TTarrow:SetAlpha(animations[unitWatch..'unitFrameTargetTargetAnimation']['progress']/150)
                 TTbarBG:SetAlpha(animations[unitWatch..'unitFrameTargetTargetAnimation']['progress']/150)
-
             end)
             unitFrameTargetTargetAnimation[unitWatch] =0
 
@@ -242,8 +246,11 @@ function createUnitFrame(unitWatch,relativePoint)
         TTarrow:SetAlpha(0)
     end)
 
+	--CHANGES:Lanrutcon:adding a condition to make sure the unit exists
     b:SetScript("OnShow",function()
-        UIFrameFadeIn(b, 0.1,0,1)
+		if UnitExists(b.unit) then
+			UIFrameFadeIn(b, 0.1,0,1)
+		end
     end)
 
     b:SetScript("OnEvent",function(self,event,unit)
@@ -251,25 +258,32 @@ function createUnitFrame(unitWatch,relativePoint)
             unitFrameTargetTargetAnimation[unitWatch] =0
             TTbarBG:SetAlpha(0)
             TTarrow:SetAlpha(0)
-
-            b:Hide()
-
+			
+            --b:Hide()
+			
+			hideFrame(b, b.unit);
             return
         end
-        b:Show()
+		
+		showFrame(b, b.unit);
+        --b:Show()
 
         if UnitExists(unitWatch..'target') then
-            TTbarBG:Show()
+            --TTbarBG:Show()
+			showFrame(TTbarBG, TTbarBG.unit);
+			showFrame(TTarrow);
             TTtarName:SetText(UnitName(unitWatch..'target'))
             TThealthBar:SetValue(UnitHealth(unitWatch..'target') / UnitHealthMax(unitWatch..'target'))
-            isFriend = UnitIsFriend("player",unitWatch..'target');
+            local isFriend = UnitIsFriend("player",unitWatch..'target');
             if isFriend then
                 TThealthBar:SetStatusBarTexture("Interface\\AddOns\\GW2_UI\\textures\\statusbarcolored_green")
             else
                 TThealthBar:SetStatusBarTexture("Interface\\AddOns\\GW2_UI\\textures\\statusbarcolored_red")
             end
         else
-            TTbarBG:Hide()
+            --TTbarBG:Hide()
+			hideFrame(TTbarBG, TTbarBG.unit);
+			hideFrame(TTarrow);
         end
 
 
@@ -300,19 +314,19 @@ function createUnitFrame(unitWatch,relativePoint)
         --end)
         --unitFrameAbsorbAnimation[unitWatch]=absorbAmount
 
-        name, subText, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible = UnitCastingInfo(unitWatch)
+        local name, subText, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible = UnitCastingInfo(unitWatch)
         casting = false
         channel = false
 
         if name~=nil then
             casting = true
         else
-            name, subText, text, texture, startTime, endTime, isTradeSkill, notInterruptible = UnitChannelInfo(unitWatch)
+            local name, subText, text, texture, startTime, endTime, isTradeSkill, notInterruptible = UnitChannelInfo(unitWatch)
             if name~=nil then
                 channel = true
             end
         end
-
+		
         powerbar:SetValue((UnitPower(unitWatch)/UnitPowerMax(unitWatch)))
 
         if name~=nil then
@@ -344,7 +358,7 @@ function createUnitFrame(unitWatch,relativePoint)
 
         --SetPortraitTexture(img1, unitWatch)
         tarName:SetText(UnitName(unitWatch))
-        powerType, powerToken, altR, altG, altB = UnitPowerType(unitWatch)
+        local powerType, powerToken, altR, altG, altB = UnitPowerType(unitWatch)
         if PowerBarColorCustom[powerToken] then
             local pwcolor = PowerBarColorCustom[powerToken]
             powerbar:SetStatusBarColor(pwcolor.r,pwcolor.g,pwcolor.b)
@@ -357,21 +371,23 @@ function createUnitFrame(unitWatch,relativePoint)
 
         bgTexture = 'Interface\\AddOns\\GW2_UI\\textures\\targetshadow'
 
+
         if ( UnitClassification(unitWatch) == "elite" ) then
             bgTexture ='Interface\\AddOns\\GW2_UI\\textures\\targetShadowElit'
             tarLevel:SetText('Elite '..tarLevel:GetText())
-        end
-        if ( UnitClassification(unitWatch) == "rare" ) then
+		elseif ( UnitClassification(unitWatch) == "worldboss" ) then
+            bgTexture ='Interface\\AddOns\\GW2_UI\\textures\\targetShadowElit'
+            tarLevel:SetText('Elite '..tarLevel:GetText())
+        elseif ( UnitClassification(unitWatch) == "rare" ) then
             bgTexture = 'Interface\\AddOns\\GW2_UI\\textures\\targetShadowRare'
             tarLevel:SetText('Rare '..tarLevel:GetText())
-        end
-        if ( UnitClassification(unitWatch) == "rareelite" ) then
+        elseif ( UnitClassification(unitWatch) == "rareelite" ) then
             bgTexture = 'Interface\\AddOns\\GW2_UI\\textures\\targetShadowRare'
             tarLevel:SetText('Rare Elite '..tarLevel:GetText())
         end
         t:SetTexture(bgTexture)
 
-        isFriend = UnitIsFriend("player",unitWatch);
+        local isFriend = UnitIsFriend("player",unitWatch);
         if isFriend then
 
             healthBar:SetStatusBarTexture("Interface\\AddOns\\GW2_UI\\textures\\statusbarcolored_green")
@@ -400,7 +416,7 @@ function createUnitFrame(unitWatch,relativePoint)
                 px = col*25;
                 py = row*-25;
 
-                name, rank, icon, count, dispelType, duration, expires, caster, isStealable, shouldConsolidate, spellID  =  UnitBuff(unitWatch,i)
+                local name, rank, icon, count, dispelType, duration, expires, caster, isStealable, shouldConsolidate, spellID  =  UnitBuff(unitWatch,i)
 
                 if _G[unitWatch..'buff'..i] then
                     _G[unitWatch..'buff'..i]:Show()
@@ -472,6 +488,7 @@ function createUnitFrame(unitWatch,relativePoint)
         for i = 1,20 do
 
             local unitDebuffCheck = nil
+			local name, rank, icon, count, dispelType, duration, expires, caster, isStealable, shouldConsolidate, spellID;
             if isFriend then
                 unitDebuffCheck = UnitDebuff(unitWatch,i)
                 name, rank, icon, count, dispelType, duration, expires, caster, isStealable, shouldConsolidate, spellID  =  UnitDebuff(unitWatch,i)
@@ -591,13 +608,13 @@ function createUnitFrame(unitWatch,relativePoint)
 
     b:RegisterEvent("UNIT_POWER");
     b:RegisterEvent("UNIT_MAX_POWER");
-    b:RegisterEvent("PLAYER_ENTERING_WORLD");
-    b:RegisterEvent("UNIT_AURA");
+    --b:RegisterEvent("PLAYER_ENTERING_WORLD");
+    --b:RegisterEvent("UNIT_AURA");
 
 
 
     dragAble:Hide()
-    b:Hide()
+    hideFrame(b, b.unit);
 
     dragAble:SetMovable(false)
     dragAble:EnableMouse(false)
@@ -647,6 +664,7 @@ unitFrameLoad:SetScript('OnUpdate',function()
             ToggleDropDownMenu(1, nil,   FocusFrameDropDown, _G['focusGwButton'], 0, 0)
         end
     end)
+	
 
 
     unitFrameLoad:SetScript('OnUpdate',nil)

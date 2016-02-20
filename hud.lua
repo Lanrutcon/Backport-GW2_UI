@@ -136,37 +136,37 @@ end
 
 function setBackDrop(n,p)
 
-    f = CreateFrame("frame",n..'Backdrop',_G[p])
+    local f = CreateFrame("frame",n..'Backdrop',_G[p])
     --f:SetScale(1.5)
-    f:SetFrameStrata("LOW")
+    f:SetFrameStrata("BACKGROUND")
     f:SetWidth( _G[n]:GetWidth()+2) 
     f:SetHeight(_G[n]:GetHeight()+2)
-    t = f:CreateTexture(n..'BackdropTexture',"BACKGROUND",f,0)
-    t:SetTexture('Interface\\AddOns\\GW2_UI\\textures\\spelliconempty')
+    f.t = f:CreateTexture(n..'BackdropTexture',"BACKGROUND",f,0)
+    f.t:SetTexture('Interface\\AddOns\\GW2_UI\\textures\\spelliconempty')
     
     f:SetPoint('CENTER',_G[n],'CENTER',0,0)
-    t:SetAllPoints(f)
-    t:SetDrawLayer("BACKGROUND", 0)
+    f.t:SetAllPoints(f)
+    f.t:SetDrawLayer("BACKGROUND", 0)
     f.texture = t
-  f:SetFrameStrata("LOW")
+	f:SetFrameStrata("BACKGROUND")
     f:SetParent(p)
     f:Show()
 end
 function setOverlay(n,p)
 
-    f = CreateFrame("frame",n..'Overlay',_G[p])
+    local f = CreateFrame("frame",n..'Overlay',_G[p])
     --f:SetScale(1.5)
     f:SetFrameStrata("MEDIUM")
     f:SetWidth( _G[n]:GetWidth()) 
     f:SetHeight(_G[n]:GetHeight())
-    t = f:CreateTexture(n..'OverlayTexture',"OVERLAY",f,0)
-    t:SetTexture('Interface\\AddOns\\GW2_UI\\textures\\spellIconOverlay')
+    f.t = f:CreateTexture(n..'OverlayTexture',"OVERLAY",f,0)
+    f.t:SetTexture('Interface\\AddOns\\GW2_UI\\textures\\spellIconOverlay')
     
     
     f:SetPoint('CENTER',_G[n],'CENTER',0,0)
-    t:SetAllPoints(f)
-    t:SetDrawLayer("OVERLAY", 1)
-    t:SetBlendMode("MOD")
+    f.t:SetAllPoints(f)
+    f.t:SetDrawLayer("OVERLAY", 1)
+    f.t:SetBlendMode("MOD")
     f.texture = t
     f:SetFrameStrata("MEDIUM")
     f:SetParent(p)
@@ -332,12 +332,12 @@ xpbar:HookScript("OnEvent", function(self)
          unitNextLevel:SetText(UnitLevel('Player') + 1)
         unitCurrentLevel:SetText(UnitLevel('Player'))
     
-    if UnitLevel('Player') == 100 then
+    if UnitLevel('Player') == 85 then
         unitNextLevel:SetText(UnitLevel('Player'))
        
 
         for factionIndex = 1, GetNumFactions() do
-          name, description, standingId, bottomValue, topValue, earnedValue, atWarWith,
+         local name, description, standingId, bottomValue, topValue, earnedValue, atWarWith,
             canToggleAtWar, isHeader, isCollapsed, hasRep, isWatched, isChild = GetFactionInfo(factionIndex)
           if isWatched == true then
             local name, reaction, min, max, value, factionID = GetWatchedFactionInfo();
@@ -372,7 +372,7 @@ xpbar:HookScript("OnUpdate", function(self)
         
  
         
-   if UnitLevel('Player') < 100 then
+   if UnitLevel('Player') < 85 then
     
 
         local xppre = UnitXP('player') / UnitXPMax('player')
@@ -485,9 +485,9 @@ gossip:RegisterEvent("GOSSIP_SHOW");
 
 durabilityBg:SetScript('OnEvent',function(self,event)
     
-        needRepair = false
+        local needRepair = false
         for i=1,23 do
-            current, maximum = GetInventoryItemDurability(i);
+            local current, maximum = GetInventoryItemDurability(i);
             if current ~=nil then
                 dur = current/maximum
                 if dur < 0.5 then

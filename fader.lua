@@ -9,33 +9,35 @@ function fadeFrameHide(f)
     end
 end
 
+local frameTimer = CreateFrame("FRAME"); --sometimes the icons dont show up after logging in, making a tiny timer to wait for all info
+frameTimer.total = 0;
+frameTimer:SetScript("OnUpdate", function(self, elapsed)
+self.total = self.total + elapsed;
+if(self.total > 0.02) then
+self:SetScript("OnUpdate",nil);
 
---CHANGES:Lanrutcon:UnitAffectingCombat returns nil if not in-combat
+--CHANGES:Lanrutcon:now only when the player mouseovers the frame it will be shown
 MultiBarBottomRight:SetScript("OnUpdate",function(self)
-    if self:IsMouseOver(100, -100, -100, 100) or UnitAffectingCombat('player') then
+    if self:IsMouseOver(100, -100, -100, 100) then --or UnitAffectingCombat('player') then
        fadeFrameShow(self)
     else
-        if not UnitAffectingCombat('player') then
+        --if not UnitAffectingCombat('player') then
             if GW2UI_SETTINGS['FADE_BOTTOM_ACTIONBAR']then
                 fadeFrameHide(self)   
             end
-        end
+        --end
     end
 end)
 MultiBarBottomLeft:SetScript("OnUpdate",function(self)
-    local b = false
-    if self:IsMouseOver(100, -100, -100, 100)  or UnitAffectingCombat('player') then
+    if self:IsMouseOver(100, -100, -100, 100) then --or UnitAffectingCombat('player') then
        fadeFrameShow(self)
     else
-        if not UnitAffectingCombat('player') then
+        --if not UnitAffectingCombat('player') then
              if GW2UI_SETTINGS['FADE_BOTTOM_ACTIONBAR']then
                 fadeFrameHide(self)   
             end 
-        end
+        --end
     end
-    
-    if self:GetAlpha()>0.0 then
-        b = true
-    end
-    setPetBar(b)
 end)
+end
+end);

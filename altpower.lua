@@ -16,15 +16,16 @@ local prevSpec = nil
 local prevStance = nil
 local altPowerHolder = CreateFrame("frame",'altPowerHolder',UIParent)
 
-    altPowerHolder:SetFrameStrata("BACKGROUND")
-    altPowerHolder:SetWidth(325)
-    altPowerHolder:SetHeight(15)
- altPowerHolder:Show()
+altPowerHolder:SetFrameStrata("BACKGROUND")
+altPowerHolder:SetWidth(325)
+altPowerHolder:SetHeight(15)
+altPowerHolder:Show()
 altPowerHolder:ClearAllPoints();
-altPowerHolder:SetPoint('BOTTOMLEFT', MultiBarBottomLeft, 'BOTTOMLEFT', 0, -16);
+--CHANGES:Lanrutcon:altPowerHolder's anchor is MainMenuBar
+altPowerHolder:SetPoint('TOPLEFT', MainMenuBar, 'TOPLEFT', 10, 0);
 
 function setAltPower(event,unit)
-local playerClassName, playerClassEng, playerClass = UnitClass('player')
+local playerClassName, playerClassEng = UnitClass('player')
 local currentSpec  = GetSpecialization();
 local stance = GetShapeshiftFormID()
     if stance==nil then
@@ -41,22 +42,22 @@ local stance = GetShapeshiftFormID()
     end
     
     --PALADIN
-   if  playerClass==2 then
+   if  playerClassName=="Paladin" then
         setAltPowerPaladin()
     end
     
-    if playerClass==4 then
+    if playerClassName==4 then
         setAltPowerRogue()
     end
     
     --PRIEST
-    if  playerClass==5 and currentSpec==1 then
+    if  playerClassName=="Priest" and currentSpec==1 then
         if prevSpec == 3 then
             unSetAltPowerPriestShadow()
         end
         setAltPowerPriestDiscipline()
     end
-    if  playerClass==5 and currentSpec==2 then
+    if  playerClassName=="Priest" and currentSpec==2 then
         if prevSpec == 1 then
             unSetAltPowerPriestDiscipline()
         end
@@ -64,7 +65,7 @@ local stance = GetShapeshiftFormID()
            unSetAltPowerPriestShadow()
         end
     end
-    if  playerClass==5 and currentSpec==3 then
+    if  playerClassName=="Priest" and currentSpec==3 then
         if prevSpec == 1 then
             unSetAltPowerPriestDiscipline()
         end
@@ -74,13 +75,13 @@ local stance = GetShapeshiftFormID()
     
     
     -- DEATH KNIGHT
-    if  playerClass==6 then
+    if  playerClassName=="Death Knight" then
         setAltPowerDeathKnight()
     end
     
     
     -- WARLOCK
-     if  playerClass==9 and currentSpec==1 then
+     if  playerClassName=="Warlock" and currentSpec==1 then
         if prevSpec == 2 then
             unSetAltPowerWarlockDemonology()
         end
@@ -90,7 +91,7 @@ local stance = GetShapeshiftFormID()
         setAltPowerWarlockAffliction()
     end
     
-    if  playerClass==9 and currentSpec==2 then
+    if  playerClassName=="Warlock" and currentSpec==2 then
         if prevSpec == 1 then
             unSetAltPowerWarlockAffliction()
         end
@@ -99,7 +100,7 @@ local stance = GetShapeshiftFormID()
         end
         setAltPowerWarlockDemonology()
     end
-     if  playerClass==9 and currentSpec==3 then
+     if  playerClassName=="Warlock" and currentSpec==3 then
         if prevSpec == 2 then
             unSetAltPowerWarlockDemonology()
         end
@@ -109,14 +110,9 @@ local stance = GetShapeshiftFormID()
          setAltPowerWarlockDestruction()
     end
     
-    --MONK
-    if  playerClass==10 then
-        setAltPowerMonk()
-    end
-    
     
     -- DRUID
-    if  playerClass==11 then
+    if  playerClassName=="Druid" then
         
         if stance==1 then
             setAltPowerRogue()
@@ -137,6 +133,7 @@ local stance = GetShapeshiftFormID()
 end
 
     function setAltPowerDeathKnight()
+			RuneFrame:Hide();
           for i = 1,6 do
 
             _G["rune" .. i .. "BG"], _G["rune" .. i .. "BGt"] = createBackgroundName('BOTTOM',15,15,0,0,"Interface\\AddOns\\GW2_UI\\textures\\altpowerbg",1,"rune" .. i .. "BG")
@@ -151,12 +148,12 @@ end
             _G["runeFill" .. i .. "BG"]:SetParent(altPowerHolder);
            -- _G["runeFill" .. i .. "BGt"]:SetVertexColor(0,0,0,1);
             _G["runeFill" .. i .. "BG"]:SetPoint('LEFT', altPowerHolder, 'LEFT', 40*(i-1), 0);
-
+	
         end
         altPowerHolder:SetScript("OnEvent", function(self, event, unit)
             if event=='ACTIVE_TALENT_GROUP_CHANGED' then
                 if unit ~= 'player' then
-                return
+					return
                 end
             end
             for i = 1,6 do
@@ -191,8 +188,15 @@ end
     spe:HookScript("OnEvent", function(self, event, unit)
         altPowerHolder:UnregisterAllEvents()
         altPowerHolder:SetScript("OnEvent", nil)
-         altPowerHolder:SetScript("OnUpdate", nil)
-        setAltPower(event,unit)
+        altPowerHolder:SetScript("OnUpdate", nil)
+        spe.total = 0;
+		spe:SetScript("OnUpdate", function(self, elapsed)
+			spe.total = spe.total + elapsed;
+			if(spe.total > 0.05) then
+				setAltPower(event,unit)
+				spe:SetScript("OnUpdate", nil);
+			end
+		end);
     end)
 
 

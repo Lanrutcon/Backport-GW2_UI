@@ -98,3 +98,17 @@ GameTooltip:SetScript("OnTooltipSetUnit", function(self)
     self:ClearAllPoints()
     self:SetPoint("BOTTOMRIGHT", WorldFrame, "BOTTOMRIGHT", 0, 200)
 end)
+
+
+--CHANGES:Lanrutcon:fixing small stuff (i.e. moving frames, hiding, etc...)
+--Small fixes--
+MiniMapLFGFrame:ClearAllPoints();
+MiniMapLFGFrame:SetPoint("LEFT", _G["Minimap"], -20,70);
+local function onShowMail(self)
+	if HasNewMail() then
+		self:Show();
+	else
+		self:Hide();
+	end
+end
+MiniMapMailFrame:HookScript("OnShow", onShowMail);

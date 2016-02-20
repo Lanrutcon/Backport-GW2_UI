@@ -11,7 +11,7 @@ local defaults_DEFAULT_CHATFRAME_ALPHA = DEFAULT_CHATFRAME_ALPHA
 local defaults_DEFAULT_CHATFRAME_COLOR = DEFAULT_CHATFRAME_COLOR
 local defaults_DEFAULT_TAB_SELECTED_COLOR_TABLE_ = DEFAULT_TAB_SELECTED_COLOR_TABLE_
 local defaults_FCF_SetWindowColor = FCF_SetWindowColor
-local defaults_FCFTab_UpdateColors = FCFTab_UpdateColors
+local defaults_FCFTab_UpdateColors = gw2_FCFTab_UpdateColors
 local defaults_FCF_FadeInChatFrame
 local defaults_FCF_FadeOutChatFrame
 
@@ -94,7 +94,9 @@ local editboxHasFocus = false
 function FCF_SetWindowColor(frame, r, g, b, doNotSave)
   --  chatFrameBg()
 end
-function FCFTab_UpdateColors(self, selected)
+
+--CHANGES:Lanrutcon:testing anti-tainted methods
+function gw2_FCFTab_UpdateColors(self, selected)
     if ( selected ) then
         self.leftSelectedTexture:Show();
         self.middleSelectedTexture:Show();
@@ -132,6 +134,7 @@ function FCFTab_UpdateColors(self, selected)
         FCFMin_UpdateColors(minimizedFrame);
     end
 end
+
 function FCF_FadeInChatFrame(chatFrame)
     local frameName = chatFrame:GetName();
     if frameName=='table' then 

@@ -24,7 +24,7 @@ local function PlateAdd ( Plate )
     local Health, Cast = nameplate.healthbar, nameplate.castbar;
     local old_name = name;
     
-	local old_threat, hpborder, highlight, old_level, old_bossicon, raidicon, old_elite = nameplate:GetRegions()
+	local old_threat, hpborder, highlight, _,old_level, old_bossicon, raidicon, old_elite = nameplate:GetRegions()
 	local cbtexture, cbborder, old_cbshield, old_cbicon, old_cbname, cbnameshadow = Cast:GetRegions()
     
 	
