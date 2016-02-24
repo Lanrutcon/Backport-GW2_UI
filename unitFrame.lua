@@ -22,6 +22,38 @@ local function hideFrame(frame, unit)
 	end
 end
 
+--Adding Blizzard's PetFrame
+
+local function setPetFrame()
+	local SV = GW2UI_SETTINGS_DB;
+	PetFrame:ClearAllPoints();
+	PetFrame:SetParent(UIParent);
+	if(SV["PetFrame"]) then
+		PetFrame:SetPoint(SV["PetFrame"]['point'], UIParent, SV["PetFrame"]['relativePoint'], SV["PetFrame"]['xOfs'], SV["PetFrame"]['yOfs']);
+	else
+		PetFrame:SetPoint("CENTER", UIParent, "CENTER", 0, 0);
+	end
+	PetFrame:SetScale(1.3);
+	PetFrame:Show();
+
+	PetFrame:SetScript("OnMouseDown", function(self, button)
+		if IsAltKeyDown() and IsShiftKeyDown() and button == "LeftButton" then
+			self:SetMovable(true);
+			self:StartMoving();
+		end
+	end);
+
+	PetFrame:SetScript("OnMouseUp", function(self, button)
+		self:SetMovable(false);
+		self:StopMovingOrSizing();
+		local point, relativeTo, relativePoint, xOfs, yOfs = self:GetPoint()
+		GW2UI_SETTINGS_DB[self:GetName()] = {};
+		GW2UI_SETTINGS_DB[self:GetName()]['point'] = point;
+		GW2UI_SETTINGS_DB[self:GetName()]['relativePoint'] = relativePoint;
+		GW2UI_SETTINGS_DB[self:GetName()]['xOfs'] = xOfs;
+		GW2UI_SETTINGS_DB[self:GetName()]['yOfs'] = yOfs;
+	end);
+end
 
 function createUnitFrame(unitWatch,relativePoint)
 
@@ -648,6 +680,8 @@ unitFrameLoad:SetScript('OnUpdate',function()
 
     createUnitFrame('target','TOP')
     createUnitFrame('focus','CENTER')
+	
+	setPetFrame();
 
     FocusFrame:UnregisterAllEvents()
     FocusFrame:SetScript('OnShow',function()

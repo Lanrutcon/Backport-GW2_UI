@@ -1,4 +1,6 @@
 
+
+
 local frame = CreateFrame("Frame")
 frame:RegisterEvent("ADDON_LOADED")
 frame:RegisterEvent("PLAYER_LOGOUT")
@@ -201,6 +203,7 @@ function createOptionWIndow()
     
     
 
+
     hudArangement:SetScript("OnEnter", function(self,event,addon)
 
          hudArangementTexture:SetTexture("Interface\\AddOns\\GW2_UI\\textures\\questviewbutton_hover");
@@ -214,41 +217,34 @@ function createOptionWIndow()
         
     end)
     
-    function enableMoveHud()
-        _G['targetdrageAbleFrame']:Show()
-        _G['targetdrageAbleFrame']:SetMovable(true)
-        _G['targetdrageAbleFrame']:EnableMouse(true)
-        
-        _G['focusdrageAbleFrame']:Show()
-        _G['focusdrageAbleFrame']:SetMovable(true)
-        _G['focusdrageAbleFrame']:EnableMouse(true)
-        
-        _G['frameMultiBarLeftdrageAbleFrame']:Show()
-        _G['frameMultiBarLeftdrageAbleFrame']:SetMovable(true)
-        _G['frameMultiBarLeftdrageAbleFrame']:EnableMouse(true)
+	
 
-        _G['frameMultiBarRightdrageAbleFrame']:Show()
-        _G['frameMultiBarRightdrageAbleFrame']:SetMovable(true)
-        _G['frameMultiBarRightdrageAbleFrame']:EnableMouse(true)
+    function enableMoveHud()
+					local movableFrames = { _G['targetdrageAbleFrame'],
+						_G['focusdrageAbleFrame'],
+						_G['frameMultiBarLeftdrageAbleFrame'],
+						_G['frameMultiBarRightdrageAbleFrame'],
+						_G['frameShapeshiftdrageAbleFrame'],
+						_G['framePetActionBardrageAbleFrame']}
+		for numFrame = 1, #movableFrames do
+			movableFrames[numFrame]:Show()
+			movableFrames[numFrame]:SetMovable(true)
+			movableFrames[numFrame]:EnableMouse(true)
+		end
         hudArangementDisable:Show()
     end
     function disableMoveHud()
-        _G['targetdrageAbleFrame']:Hide()
-        _G['targetdrageAbleFrame']:SetMovable(false)
-        _G['targetdrageAbleFrame']:EnableMouse(false)
-        
-        _G['focusdrageAbleFrame']:Hide()
-        _G['focusdrageAbleFrame']:SetMovable(false)
-        _G['focusdrageAbleFrame']:EnableMouse(false)
-        
-        _G['frameMultiBarLeftdrageAbleFrame']:Hide()
-        _G['frameMultiBarLeftdrageAbleFrame']:SetMovable(false)
-        _G['frameMultiBarLeftdrageAbleFrame']:EnableMouse(false)
-
-        _G['frameMultiBarRightdrageAbleFrame']:Hide()
-        _G['frameMultiBarRightdrageAbleFrame']:SetMovable(false)
-        _G['frameMultiBarRightdrageAbleFrame']:EnableMouse(false)
-        
+				local movableFrames = { _G['targetdrageAbleFrame'],
+						_G['focusdrageAbleFrame'],
+						_G['frameMultiBarLeftdrageAbleFrame'],
+						_G['frameMultiBarRightdrageAbleFrame'],
+						_G['frameShapeshiftdrageAbleFrame'],
+						_G['framePetActionBardrageAbleFrame']}
+		for numFrame = 1, #movableFrames do
+			movableFrames[numFrame]:Hide()
+			movableFrames[numFrame]:SetMovable(false)
+			movableFrames[numFrame]:EnableMouse(false)
+		end
          hudArangementDisable:Hide()
     end
 

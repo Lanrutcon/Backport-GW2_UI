@@ -28,6 +28,7 @@ local function PlateAdd ( Plate )
 	local cbtexture, cbborder, old_cbshield, old_cbicon, old_cbname, cbnameshadow = Cast:GetRegions()
     
 	
+	glow:Hide();
 
 
     old_threat:Hide()

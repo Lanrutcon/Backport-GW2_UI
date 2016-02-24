@@ -25,17 +25,29 @@ GW2UI_SETTINGS['multibarleft_y_position'] = -0
 GW2UI_SETTINGS['multibarright_x_position'] = -260
 GW2UI_SETTINGS['multibarright_y_position'] = -0
 
-GW2UI_SETTINGS['multibarleft_pos'] ={}
-GW2UI_SETTINGS['multibarleft_pos']['point'] = 'RIGHT'
-GW2UI_SETTINGS['multibarleft_pos']['relativePoint'] = 'RIGHT'
-GW2UI_SETTINGS['multibarleft_pos']['xOfs'] = -300
-GW2UI_SETTINGS['multibarleft_pos']['yOfs']  = 0
+GW2UI_SETTINGS['frameMultiBarLeftdrageAbleFrame'] ={}
+GW2UI_SETTINGS['frameMultiBarLeftdrageAbleFrame']['point'] = 'RIGHT'
+GW2UI_SETTINGS['frameMultiBarLeftdrageAbleFrame']['relativePoint'] = 'RIGHT'
+GW2UI_SETTINGS['frameMultiBarLeftdrageAbleFrame']['xOfs'] = -300
+GW2UI_SETTINGS['frameMultiBarLeftdrageAbleFrame']['yOfs']  = 0
 
-GW2UI_SETTINGS['multibarright_pos'] ={}
-GW2UI_SETTINGS['multibarright_pos']['point'] = 'RIGHT'
-GW2UI_SETTINGS['multibarright_pos']['relativePoint'] = 'RIGHT'
-GW2UI_SETTINGS['multibarright_pos']['xOfs'] = -260
-GW2UI_SETTINGS['multibarright_pos']['yOfs']  = 0
+GW2UI_SETTINGS['frameMultiBarRightdrageAbleFrame'] ={}
+GW2UI_SETTINGS['frameMultiBarRightdrageAbleFrame']['point'] = 'RIGHT'
+GW2UI_SETTINGS['frameMultiBarRightdrageAbleFrame']['relativePoint'] = 'RIGHT'
+GW2UI_SETTINGS['frameMultiBarRightdrageAbleFrame']['xOfs'] = -260
+GW2UI_SETTINGS['frameMultiBarRightdrageAbleFrame']['yOfs']  = 0
+
+GW2UI_SETTINGS['frameShapeshiftdrageAbleFrame'] ={}
+GW2UI_SETTINGS['frameShapeshiftdrageAbleFrame']['point'] = 'CENTER'
+GW2UI_SETTINGS['frameShapeshiftdrageAbleFrame']['relativePoint'] = 'CENTER'
+GW2UI_SETTINGS['frameShapeshiftdrageAbleFrame']['xOfs'] = 0
+GW2UI_SETTINGS['frameShapeshiftdrageAbleFrame']['yOfs']  = 0
+
+GW2UI_SETTINGS['framePetActionBardrageAbleFrame'] ={}
+GW2UI_SETTINGS['framePetActionBardrageAbleFrame']['point'] = 'CENTER'
+GW2UI_SETTINGS['framePetActionBardrageAbleFrame']['relativePoint'] = 'CENTER'
+GW2UI_SETTINGS['framePetActionBardrageAbleFrame']['xOfs'] = 0
+GW2UI_SETTINGS['framePetActionBardrageAbleFrame']['yOfs']  = 0
 
 
 GW2UI_SETTINGS['target_pos'] ={}
