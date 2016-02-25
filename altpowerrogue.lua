@@ -1,4 +1,4 @@
-function setAltPowerRogue()
+  function setAltPowerRogue()
             for i = 1,5 do
                 if i>5 then
                     createBackgroundName('BOTTOM',16,16,0,0,"Interface\\AddOns\\GW2_UI\\textures\\altpowerbg",1,"combatPoints" .. i .. "BG")
@@ -6,13 +6,13 @@ function setAltPowerRogue()
                  createBackgroundName('BOTTOM',45,16,0,0,"Interface\\AddOns\\GW2_UI\\textures\\altpowerbarbg",1,"combatPoints" .. i .. "BG")
                 end
                 _G["combatPoints" .. i .. "BG"]:ClearAllPoints();
-                _G["combatPoints" .. i .. "BG"]:SetParent(altPowerHolder);
+                _G["combatPoints" .. i .. "BG"]:SetParent(altPowerHolderC);
                 _G["combatPoints" .. i .. "BGTexture"]:SetVertexColor(0,0,0,1);
                 local p  = 50*(i-1)
                 if i > 5 then
                     p = (50*2) + (25 * (i-3)) + (36)
                 end
-                _G["combatPoints" .. i .. "BG"]:SetPoint('LEFT', altPowerHolder, 'LEFT', p, 7);
+                _G["combatPoints" .. i .. "BG"]:SetPoint('LEFT', altPowerHolderC, 'LEFT', p, 7);
 
 
                 if i>5 then
@@ -21,23 +21,23 @@ function setAltPowerRogue()
                     createBackgroundName('BOTTOM',45,16,0,0,"Interface\\AddOns\\GW2_UI\\textures\\altpowerbarfill",2,"combatPointsFill" .. i .. "BG")
                 end
                 _G["combatPointsFill" .. i .. "BG"]:ClearAllPoints();
-                _G["combatPointsFill" .. i .. "BG"]:SetParent(altPowerHolder);
+                _G["combatPointsFill" .. i .. "BG"]:SetParent(altPowerHolderC);
                 _G["combatPointsFill" .. i .. "BGTexture"]:SetVertexColor(93/255,5/255,255/255,0);
-                _G["combatPointsFill" .. i .. "BG"]:SetPoint('LEFT', altPowerHolder, 'LEFT', p, 7);
+                _G["combatPointsFill" .. i .. "BG"]:SetPoint('LEFT', altPowerHolderC, 'LEFT', p, 7);
 
             end
-            altPowerHolder:SetScript("OnEvent", function(self, event)
+            altPowerHolderC:SetScript("OnEvent", function(self, event)
                          updateCombatPoints()
             end)
-            altPowerHolder:RegisterEvent("PLAYER_TARGET_CHANGED")
-            altPowerHolder:RegisterEvent("UNIT_COMBO_POINTS")
-            altPowerHolder:RegisterEvent("UNIT_POWER");
-            altPowerHolder:RegisterEvent("SPELLS_CHANGED");
+			altPowerHolderC:RegisterEvent("PLAYER_TARGET_CHANGED")
+			altPowerHolderC:RegisterEvent("UNIT_COMBO_POINTS")
+            altPowerHolderC:RegisterEvent("UNIT_POWER");
+			altPowerHolderC:RegisterEvent("SPELLS_CHANGED");
             updateCombatPoints()
         end
-    function updateCombatPoints()
+	function updateCombatPoints()
         local comboPoints = GetComboPoints(UnitHasVehicleUI("player") and "vehicle" or "player")
-    for i = 1,5 do
+	for i = 1,5 do
             if comboPoints>= i then
                 _G["combatPointsFill" .. i .. "BGTexture"]:SetVertexColor(165/255,114/255,63/255,1);
             else
@@ -51,7 +51,7 @@ function setAltPowerRogue()
             end
         end
     end
-        function unSetAltPowerRogue()
+	    function unSetAltPowerRogue()
          for i = 1,5 do
                 if _G["combatPoints" .. i .. "BGTexture"] then
                     _G["combatPoints" .. i .. "BGTexture"]:SetVertexColor(0,0,0,0);

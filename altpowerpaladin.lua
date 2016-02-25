@@ -27,29 +27,6 @@ function setAltPowerPaladin()
     _G["holyPowerBar"]:SetHeight(32)
     _G["holyPowerBar"]:SetPoint('CENTER', _G["holyPowerBG"], 'CENTER', 0, 0);
 
-    _G["holyPowerExtraBG"],_G["holyPowerExtraTexture"] = createBackgroundName('TOPLEFT',16,16,0,0,"Interface\\AddOns\\GW2_UI\\textures\\altpowerbg",1,'holyPowerExtraBG')
-    _G["holyPowerExtraBG"]:ClearAllPoints()
-    _G["holyPowerExtraBG"]:SetParent(altPowerHolder);
-    _G["holyPowerExtraBG"]:SetPoint('LEFT', holyPowerBG, 'RIGHT', 5, 0);
-    
-    _G["holyPowerExtraBG2"],_G["holyPowerExtraTexture2"] = createBackgroundName('TOPLEFT',16,16,0,0,"Interface\\AddOns\\GW2_UI\\textures\\altpowerbg",1,'holyPowerExtraBG2')
-    _G["holyPowerExtraBG2"]:ClearAllPoints()
-    _G["holyPowerExtraBG2"]:SetParent(altPowerHolder);
-    _G["holyPowerExtraBG2"]:SetPoint('LEFT', holyPowerExtraBG, 'RIGHT', 5, 0);
-    
-    _G["holyPowerExtraFillBg"],_G["holyPowerExtraTexture2"] = createBackgroundName('TOPLEFT',16,16,0,0,"Interface\\AddOns\\GW2_UI\\textures\\altpowerfill",1,'holyPowerExtraFillBg')
-    _G["holyPowerExtraFillBg"]:ClearAllPoints()
-    _G["holyPowerExtraFillBg"]:SetParent(altPowerHolder);
-    _G["holyPowerExtraFillBg"]:SetPoint('CENTER', holyPowerExtraBG, 'CENTER', 0, 0);
-    _G["holyPowerExtraFillBg"]:SetFrameLevel(4)
-    
-    _G["holyPowerExtraFillBg2"],_G["holyPowerExtraTexture2"] = createBackgroundName('TOPLEFT',16,16,0,0,"Interface\\AddOns\\GW2_UI\\textures\\altpowerfill",1,'holyPowerExtraFillBg2')
-    _G["holyPowerExtraFillBg2"]:ClearAllPoints()
-    _G["holyPowerExtraFillBg2"]:SetParent(altPowerHolder);
-    _G["holyPowerExtraFillBg2"]:SetPoint('CENTER', holyPowerExtraBG2, 'CENTER', 0, 0);
-    _G["holyPowerExtraFillBg2"]:SetFrameLevel(4)
-    
-    
     HolyShine = CreateFrame("PlayerModel",HolyShine,altPowerHolder)
     HolyShine:SetFrameStrata("BACKGROUND")
     HolyShine:SetFrameLevel(0)
@@ -83,22 +60,6 @@ function setAltPowerPaladin()
                     end
                 end
                 _G["holyPowerBar"]:SetValue(currentLerpPaladin)
-                if UnitPower('player',9)>=4 then
-                    _G["holyPowerExtraFillBg"]:Show()
-                else
-                     _G["holyPowerExtraFillBg"]:Hide()
-                end
-              if UnitPower('player',9)>=5 then
-                    _G["holyPowerExtraFillBg2"]:Show()
-                else
-                     _G["holyPowerExtraFillBg2"]:Hide()
-                end
             end)
          
         end
-        
-    function updateHolyPowerBar()
-     --UnitPower('player',9)
-       -- _G["holyPowerBar"]:SetValue(UnitPower('player',9))
-          
-    end

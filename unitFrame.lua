@@ -115,6 +115,14 @@ function createUnitFrame(unitWatch,relativePoint)
     targetPortraitFrame:SetParent(b)
     targetPortraitFrame:SetPoint("TOPLEFT", b, "TOPLEFT", 133, -40)
     targetPortraitFrame:SetSize(59,59)
+	
+	local altPowerHolderC = CreateFrame("frame",'altPowerHolderC', ComboFrame)
+	altPowerHolderC:SetFrameStrata("BACKGROUND")
+	altPowerHolderC:SetWidth(325)
+	altPowerHolderC:SetHeight(15)
+	altPowerHolderC:Show()
+	altPowerHolderC:ClearAllPoints();
+	altPowerHolderC:SetPoint("TOPLEFT", b, "TOPLEFT", 205, -37);
 
     local img1 = targetPortraitFrame:CreateTexture(nil, "BACKGROUND")
     img1:SetHeight(59)

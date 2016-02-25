@@ -29,80 +29,63 @@ altPowerHolder:SetPoint('TOPLEFT', MainMenuBar, 'TOPLEFT', 10, 0);
 
 
 function setAltPower(event,unit)
-    local playerClassName, playerClassEng = UnitClass('player')
+    local playerClassName = UnitClass('player')
     local currentSpec  = GetSpecialization();
     local stance = GetShapeshiftFormID()
     if stance==nil then
         stance = 0
     end
-    if event == 'UPDATE_SHAPESHIFT_FORM' and stance~=nil then
+    if playerClassName=="Druid" and event == 'UPDATE_SHAPESHIFT_FORM' and stance~=nil then
         if prevStance==31 then
             unSetAltPowerMoonkin()
-        end
-        if prevStance == 1 then
+		elseif prevStance == 1 then
             unSetAltPowerRogue()
         end
         prevStance = stance
     end
 
+	
     --PALADIN
-    if  playerClassName=="Paladin" then
+    if playerClassName=="Paladin" then
         setAltPowerPaladin()
-    end
-
+    
+	
     -- Rogue
-    if playerClassName=="Rogue" then
+    elseif playerClassName=="Rogue" then
         setAltPowerRogue()
-    end
+    
 
     --PRIEST
-    if  playerClassName=="Priest" and currentSpec==1 then
-        if prevSpec == 3 then
-            unSetAltPowerPriestShadow()
-        end
-    end
-    if  playerClassName=="Priest" and currentSpec==2 then
-        if prevSpec == 1 then
-            unSetAltPowerPriestDiscipline()
-        end
-        if prevSpec == 3 then
-            unSetAltPowerPriestShadow()
-        end
-    end
-    if  playerClassName=="Priest" and currentSpec==3 then
-        if prevSpec ~= 3 then
-            setAltPowerPriestShadow()
-        end
-    end
+    elseif playerClassName=="Priest" then
+		if (currentSpec==1 or currentSpec == 2) and prevSpec == 3 then
+			unSetAltPowerPriestShadow()
+		elseif currentSpec == 2 and (prevSpec == 1 or prevSpec == 3) then
+			if prevSpec == 1 then
+				unSetAltPowerPriestDiscipline()
+			else
+				unSetAltPowerPriestShadow()
+			end
+		elseif currentSpec == 3 and prevSpec ~= 3 then
+			setAltPowerPriestShadow()
+		end
 
 
     -- DEATH KNIGHT
-    if  playerClassName=="Death Knight" then
+    elseif playerClassName=="Death Knight" then
         setAltPowerDeathKnight()
-    end
-
+    
 
     -- WARLOCK
-    if  playerClassName=="Warlock" then
+    elseif playerClassName=="Warlock" then
         setAltPowerWarlock()
-    end
-
+    
 
     -- DRUID
-    if  playerClassName=="Druid" then
-
+    elseif playerClassName=="Druid" then
         if stance==1 then
             setAltPowerRogue()
-        end
-
-        if stance==5 or stance==4 or stance==3 or stance==2 or stance==29 then
-
-
-        end
-        if stance == 31 then
-
+		elseif stance == 31 then
             setAltPowerMoonkin()
-
         end
     end
 
