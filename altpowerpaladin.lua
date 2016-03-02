@@ -16,7 +16,7 @@ function setAltPowerPaladin()
     _G["holyPowerBG"],_G["holyPowerTexture"] = createBackground('TOPLEFT',256,32,0,0,"Interface\\AddOns\\GW2_UI\\textures\\holypower_bg",1)
     _G["holyPowerBG"]:ClearAllPoints()
     _G["holyPowerBG"]:SetParent(altPowerHolder);
-    _G["holyPowerBG"]:SetPoint('LEFT', altPowerHolder, 'LEFT', -5, 5);
+    _G["holyPowerBG"]:SetPoint('LEFT', altPowerHolderC, 'LEFT', -5, 10);
     
     _G["holyPowerBar"] = CreateFrame("StatusBar", nil, _G["holyPowerBG"])
     _G["holyPowerBar"]:SetStatusBarTexture("Interface\\AddOns\\GW2_UI\\textures\\holypower_fill")
@@ -32,15 +32,15 @@ function setAltPowerPaladin()
     HolyShine:SetFrameLevel(0)
     HolyShine:SetWidth(500) 
     HolyShine:SetHeight(474) 
-    HolyShine:SetPoint('BOTTOM',altPowerHolder,'BOTTOM',0,-100)
+    HolyShine:SetPoint('BOTTOM',MainMenuBar,'BOTTOM',0,-100)
     HolyShine:SetModel('SPELLS/HolyZone.m2')
     HolyShine:SetPosition(-12,0,0)
     HolyShine:SetAlpha(0)
     
           
             _G["holyPowerBG"]:SetScript('OnUpdate',function()
-            
-                m = UnitPower('player',9)*1000
+
+			m = UnitPower('player',9)*1000
             
               if oldValuePaladin ~= m and lerpRunningPaladin~=true then
 

@@ -146,7 +146,9 @@ end
 
 
 
-
+local ChildCount, NewChildCount = 0;
+local NextUpdate = 0;
+local pairs = pairs;
 nPlates:SetScript('OnUpdate',function(self)
     if GW2UI_SETTINGS['SETTINGS_LOADED'] == false then
         return
@@ -154,9 +156,7 @@ nPlates:SetScript('OnUpdate',function(self)
     if GW2UI_SETTINGS['DISABLE_NAMEPLATES'] == true then
         return
     end
-local ChildCount, NewChildCount = 0;
-        local NextUpdate = 0;
-        local pairs = pairs;
+
                 -- Check for new nameplates
                 NewChildCount = WorldFrame:GetNumChildren();
                 if ( ChildCount ~= NewChildCount ) then

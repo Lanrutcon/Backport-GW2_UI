@@ -56,8 +56,6 @@ mainCastingBarBg:SetScript("OnUpdate",function(self)
 
             end
         end
-        
-        
 end)
 
 

@@ -34,7 +34,7 @@ MinimapZoneText:SetPoint('TOP',Minimap,0,25)
 Minimap:SetScript('OnUpdate', function(self)
 	
 	if self:IsMouseOver(0, -0, -0, 0) then
-    hoverMiniMap()
+		hoverMiniMap()
     end
 	
 end)

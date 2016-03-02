@@ -2,6 +2,7 @@ ComboFrame:Hide(); -- hiding default combo points
 ComboFrame:ClearAllPoints();
 --MISSING FUNCTIONS--
 
+
 function GetSpecialization()
     return GetPrimaryTalentTree();
 end
@@ -16,8 +17,8 @@ end
 local spe = CreateFrame("frame",'spe',UIParent)
 local prevSpec = nil
 local prevStance = nil
-local altPowerHolder = CreateFrame("frame",'altPowerHolder',UIParent)
 
+local altPowerHolder = CreateFrame("frame",'altPowerHolder',UIParent)
 altPowerHolder:SetFrameStrata("BACKGROUND")
 altPowerHolder:SetWidth(325)
 altPowerHolder:SetHeight(15)
@@ -25,6 +26,14 @@ altPowerHolder:Show()
 altPowerHolder:ClearAllPoints();
 --CHANGES:Lanrutcon:altPowerHolder's anchor is MainMenuBar
 altPowerHolder:SetPoint('TOPLEFT', MainMenuBar, 'TOPLEFT', 10, 0);
+
+local altPowerHolderS = CreateFrame("frame",'altPowerHolderS',UIParent)
+altPowerHolderS:SetFrameStrata("BACKGROUND")
+altPowerHolderS:SetWidth(325)
+altPowerHolderS:SetHeight(15)
+altPowerHolderS:Show()
+altPowerHolderS:ClearAllPoints();
+altPowerHolderS:SetPoint('TOPLEFT', MainMenuBar, 'TOPLEFT', 10, 0);
 
 
 
@@ -59,13 +68,13 @@ function setAltPower(event,unit)
     elseif playerClassName=="Priest" then
 		if (currentSpec==1 or currentSpec == 2) and prevSpec == 3 then
 			unSetAltPowerPriestShadow()
-		elseif currentSpec == 2 and (prevSpec == 1 or prevSpec == 3) then
-			if prevSpec == 1 then
-				unSetAltPowerPriestDiscipline()
-			else
-				unSetAltPowerPriestShadow()
-			end
-		elseif currentSpec == 3 and prevSpec ~= 3 then
+			setAltPowerPriestDiscipline()
+		elseif (currentSpec==1 or currentSpec == 2) and prevSpec == nil then
+			setAltPowerPriestDiscipline()
+		elseif currentSpec==3 and prevSpec == nil then
+			setAltPowerPriestShadow()
+		elseif currentSpec==3 and (prevSpec == 1 or prevSpec == 2) then
+			unSetAltPowerPriestDiscipline()
 			setAltPowerPriestShadow()
 		end
 
@@ -146,19 +155,18 @@ end
 
 
 spe:HookScript("OnEvent", function(self, event, unit)
-    altPowerHolder:UnregisterAllEvents()
+	altPowerHolder:UnregisterAllEvents()
     altPowerHolder:SetScript("OnEvent", nil)
     altPowerHolder:SetScript("OnUpdate", nil)
     spe.total = 0;
-    spe:SetScript("OnUpdate", function(self, elapsed)
-        spe.total = spe.total + elapsed;
-        if(spe.total > 0.05) then
+	    spe:SetScript("OnUpdate", function(self,elapsed)
+		spe.total = spe.total + elapsed;
+        if (spe.total > 0.05) then
             setAltPower(event,unit)
             spe:SetScript("OnUpdate", nil);
         end
-    end);
+	end)
 end)
-
 
 
 spe:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")

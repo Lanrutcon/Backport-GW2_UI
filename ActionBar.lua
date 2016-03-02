@@ -1,12 +1,7 @@
 local addon, ns = ...
 
-local frameTimer = CreateFrame("FRAME"); --sometimes the icons dont show up after logging in, making a tiny timer to wait for all info
-frameTimer.total = 0;
-frameTimer:SetScript("OnUpdate", function(self, elapsed)
-    self.total = self.total + elapsed;
-    if(self.total > 0) then
-        self:SetScript("OnUpdate",nil);
 
+local function initBars()
         _G["BonusActionBarFrame"]:SetScript("OnShow", function(self) self:Hide(); end);
         _G["BonusActionBarFrame"]:Hide();
 
@@ -803,4 +798,29 @@ frameTimer:SetScript("OnUpdate", function(self, elapsed)
             actionBarsFrameLoad:SetScript('OnUpdate',nil)
         end)
     end
+
+local frameTimer = CreateFrame("FRAME"); --sometimes the icons dont show up after logging in, making a tiny timer to wait for all info
+frameTimer.total = 0;
+frameTimer:SetScript("OnUpdate", function(self, elapsed)
+    self.total = self.total + elapsed;
+    if(self.total > 0.05) then
+		self.total = 0;
+        self:SetScript("OnUpdate",nil);
+		initBars();
+	end
 end);
+
+
+
+frameTimer:SetScript("OnEvent", function(self, event)
+	self:SetScript("OnUpdate", function(self, elapsed)
+		self.total = self.total + elapsed;
+		if(self.total > 0.3) then
+			self.total = 0;
+			self:SetScript("OnUpdate",nil);
+			initBars();
+		end
+	end);
+end);
+frameTimer:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED");
+frameTimer:RegisterEvent("PLAYER_ENTERING_WORLD");
